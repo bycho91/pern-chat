@@ -1,4 +1,6 @@
 # PERN Chat App
 
-### Technologies:
-Postgres, Express, React, Node, SocketIO, ChakraUI
+### Front-End Technologies:
+React with JSX
+Chakra UI for styling
+React Query for data fetching
