@@ -1,11 +1,12 @@
 import ToggleColorMode from "./components/ToggleColorMode";
+import Views from "./components/Views";
 
 function App() {
   return (
-    <div className="App">
+    <>
       <ToggleColorMode />
-      <h1>hello world</h1>
-    </div>
+      <Views />
+    </>
   );
 }
 
