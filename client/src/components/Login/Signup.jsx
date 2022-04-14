@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import TextField from "./TextField";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { useContext } from "react";
+import { AccountContext } from "../AccountContext";
 
 const Signup = () => {
+  const { setUser } = useContext(AccountContext);
   const navigate = useNavigate();
   return (
     <Formik
@@ -21,8 +24,32 @@ const Signup = () => {
           .max(28, "Username too long"),
       })}
       onSubmit={(values, actions) => {
-        alert(JSON.stringify(values, null, 2));
+        const vals = { ...values };
         actions.resetForm();
+        fetch("http://localhost:5000/auth/register", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(vals),
+        })
+          .catch((err) => {
+            return;
+          })
+          .then((res) => {
+            if (!res || !res.ok || res.status >= 400) {
+              return;
+            }
+            return res.json();
+          })
+          .then((data) => {
+            if (!data) {
+              return;
+            }
+            setUser({ ...data });
+            navigate("/home");
+          });
       }}
     >
       <VStack
@@ -47,6 +74,7 @@ const Signup = () => {
           placeholder="Enter password"
           autoComplete="off"
           label="Password"
+          type="password"
         />
 
         <ButtonGroup pt="1rem">
