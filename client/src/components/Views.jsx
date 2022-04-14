@@ -11,7 +11,7 @@ const Views = () => {
   return (
     <>
       {user.loggedIn === null ? (
-        ""
+        <Text>Loading...</Text>
       ) : (
         <Routes>
           <Route path="/" element={<Login />} />

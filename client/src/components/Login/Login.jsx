@@ -1,12 +1,13 @@
-import { VStack, ButtonGroup, Button, Heading } from "@chakra-ui/react";
+import { VStack, ButtonGroup, Button, Heading, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import TextField from "./TextField";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AccountContext } from "../AccountContext";
 
 const Login = () => {
+  const [error, setError] = useState(null);
   const { setUser } = useContext(AccountContext);
   const navigate = useNavigate();
 
@@ -47,8 +48,12 @@ const Login = () => {
             if (!data) {
               return;
             }
-            navigate("/home");
             setUser({ ...data });
+            if (data.status) {
+              setError(data.status);
+            } else if (data.loggedIn) {
+              navigate("/home");
+            }
           });
       }}
     >
@@ -63,6 +68,9 @@ const Login = () => {
         <Heading mr="auto" size="3xl" mb="1rem">
           Log In
         </Heading>
+        <Text as="p" color="red.500">
+          {error}
+        </Text>
         <TextField
           name="username"
           placeholder="Enter username"
